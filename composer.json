@@ -1,6 +1,6 @@
 {
   "name": "chmielewskitomasz/ranges",
-  "description": "Simple tool to manage time ranges. No dependencies required",
+  "description": "Simple tool to manage time ranges (sum & sub). No dependencies required",
   "type": "project",
   "license": "MIT",
   "config": {
