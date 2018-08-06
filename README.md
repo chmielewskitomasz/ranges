@@ -1,4 +1,12 @@
 ## Simple, lightweight tool to manage time ranges
+[![Build Status](https://travis-ci.org/chmielewskitomasz/ranges.svg?branch=master)](https://travis-ci.org/chmielewskitomasz/ranges)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/chmielewskitomasz/ranges/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/chmielewskitomasz/ranges/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/chmielewskitomasz/ranges/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/chmielewskitomasz/ranges/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/chmielewskitomasz/ranges/badges/build.png?b=master)](https://scrutinizer-ci.com/g/chmielewskitomasz/ranges/build-status/master)
+[![Latest Stable Version](https://poser.pugx.org/chmielewskitomasz/ranges/v/stable)](https://packagist.org/packages/chmielewskitomasz/ranges)
+[![License](https://poser.pugx.org/chmielewskitomasz/ranges/license)](https://packagist.org/packages/chmielewskitomasz/ranges)
+
+[![Donate on PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/chmielewskitomasz)
 
 #### What is this tool supposed to help me with?
 
