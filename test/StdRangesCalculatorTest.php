@@ -26,7 +26,12 @@ final class StdRangesCalculatorTest extends TestCase
         $this->assertInstanceOf(RangesCalculator::class, $this->calculator);
     }
 
-    public function test_sumRanges(): void
+    public function test_sumEmpty(): void
+    {
+        $this->assertEquals([], $this->calculator->sum());
+    }
+
+    public function test_sumNotMerge(): void
     {
         $ranges = $this->calculator->sum(
             new Range(new \DateTime('2018-01-01 00:01:01'), new \DateTime('2018-01-01 00:02:00')),
@@ -44,8 +49,10 @@ final class StdRangesCalculatorTest extends TestCase
 
         $this->assertEquals('2018-02-01 00:00:00', $ranges[2]->dateFrom()->format('Y-m-d H:i:s'));
         $this->assertEquals('2018-02-01 00:01:00', $ranges[2]->dateTo()->format('Y-m-d H:i:s'));
+    }
 
-
+    public function test_sumAndMerge(): void
+    {
         $ranges = $this->calculator->sum(
             new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-01-01 00:02:00')),
             new Range(new \DateTime('2018-02-01 00:00:00'), new \DateTime('2018-02-01 00:01:00')),
@@ -83,8 +90,10 @@ final class StdRangesCalculatorTest extends TestCase
 
         $this->assertEquals('2018-01-01 00:00:00', $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
         $this->assertEquals('2018-01-01 00:02:00', $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
+    }
 
-
+    public function test_sumMergeInner(): void
+    {
         $ranges = $this->calculator->sum(
             new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-01-01 00:02:00')),
             new Range(new \DateTime('2018-01-01 00:01:56'), new \DateTime('2018-01-01 00:01:59')),
