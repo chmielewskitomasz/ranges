@@ -1,0 +1,36 @@
+{
+  "name": "chmielewskitomasz/ranges",
+  "description": "Simple tool to manage time ranges. No dependencies required",
+  "type": "project",
+  "license": "MIT",
+  "config": {
+    "sort-packages": true,
+    "bin-dir": "bin"
+  },
+  "require": {
+    "php": "^7.2"
+  },
+  "require-dev": {
+    "phpspec/phpspec": "^4.3",
+    "phpunit/phpunit": "^6.0.8 || ^5.7.15",
+    "squizlabs/php_codesniffer": "^2.8.1",
+    "friendsofphp/php-cs-fixer": "^2.8",
+    "phpstan/phpstan": "^0.9.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hop\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Test\\": "test/"
+    }
+  },
+  "scripts": {
+    "cs-fix": "php-cs-fixer fix -v --config=.php_cs.dist",
+    "stan": "phpstan analyze -c phpstan.neon src/",
+    "test": "phpunit --colors=always",
+    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+  }
+}
