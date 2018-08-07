@@ -52,8 +52,6 @@ final class StdRangesCalculator implements RangesCalculator
     {
         $resultRanges = [];
         $interval = new \DateInterval('PT1S');
-        $newRangeFrom = null;
-        $newRangeTo = null;
         foreach ($ranges as $minuend) {
             if ($range->dateFrom() < $minuend->dateFrom() && $range->dateTo() > $minuend->dateTo()) {
                 continue;
