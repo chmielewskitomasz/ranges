@@ -118,7 +118,7 @@ $range2 = new Range(
 
 $calculator = new StdRangesCalculator();
 
-$ranges = $calculator->sum(
+$ranges = $calculator->sub(
     $range1,
     $range2
 );
