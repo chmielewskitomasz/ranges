@@ -16,7 +16,9 @@ Using this tool you can
  
 #### How to use this tool?
 
-Simple... Just
+Simple... 
+
+To add ranges just...
 
 ```php
 require_once __DIR__ . '/vendor/autoload.php';
@@ -91,3 +93,83 @@ Array
         )
 
 )
+
+```
+
+To substract ranges do
+
+```php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Hop\Ranges\Range;
+use Hop\Ranges\StdRangesCalculator;
+
+$range1 = new Range(
+    new \DateTime('2018-01-01 00:00:00'),
+    new \DateTime('2018-01-05 00:05:00')
+);
+
+$range2 = new Range(
+    new \DateTime('2018-01-02 00:06:00'),
+    new \DateTime('2018-01-02 00:07:00')
+);
+
+
+$calculator = new StdRangesCalculator();
+
+$ranges = $calculator->sum(
+    $range1,
+    $range2
+);
+
+print_r($ranges);
+
+// prints out
+
+Array
+(
+    [0] => Hop\Ranges\Range Object
+        (
+            [dateFrom:Hop\Ranges\Range:private] => DateTime Object
+                (
+                    [date] => 2018-01-01 00:00:00.000000
+                    [timezone_type] => 3
+                    [timezone] => UTC
+                )
+
+            [dateTo:Hop\Ranges\Range:private] => DateTime Object
+                (
+                    [date] => 2018-01-02 00:05:59.000000
+                    [timezone_type] => 3
+                    [timezone] => UTC
+                )
+
+        )
+
+    [1] => Hop\Ranges\Range Object
+        (
+            [dateFrom:Hop\Ranges\Range:private] => DateTime Object
+                (
+                    [date] => 2018-01-02 00:07:01.000000
+                    [timezone_type] => 3
+                    [timezone] => UTC
+                )
+
+            [dateTo:Hop\Ranges\Range:private] => DateTime Object
+                (
+                    [date] => 2018-01-05 00:05:00.000000
+                    [timezone_type] => 3
+                    [timezone] => UTC
+                )
+
+        )
+
+)
+
+```
+
+
+Enjoy!
+
+&copy; Tomasz Chmielewski

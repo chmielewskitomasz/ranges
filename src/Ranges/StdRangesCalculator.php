@@ -31,9 +31,58 @@ final class StdRangesCalculator implements RangesCalculator
 
     /**
      * @inheritdoc
+     * @throws \Exception
      */
     public function sub(Range $minuend, Range ...$subtrahends): array
     {
+        $ranges = [$minuend];
+        foreach ($subtrahends as $subtrahend) {
+            $ranges = $this->removeRangeFromRanges($subtrahend, $ranges);
+        }
+        return $ranges;
+    }
+
+    /**
+     * @param Range $range
+     * @param Range[] $ranges
+     * @return Range[]
+     * @throws \Exception
+     */
+    private function removeRangeFromRanges(Range $range, array $ranges): array
+    {
+        $resultRanges = [];
+        $interval = new \DateInterval('PT1S');
+        $newRangeFrom = null;
+        $newRangeTo = null;
+        foreach ($ranges as $minuend) {
+            if ($range->dateFrom() < $minuend->dateFrom() && $range->dateTo() > $minuend->dateTo()) {
+                continue;
+            }
+
+            if ($minuend->dateTo() < $range->dateFrom() || $minuend->dateFrom() > $range->dateTo()) {
+                $resultRanges[] = $minuend;
+                continue;
+            }
+
+            if ($range->dateFrom() > $minuend->dateFrom()) {
+                $dateTo = new \DateTime($range->dateFrom()->format('Y-m-d H:i:s'));
+                $dateTo->sub($interval);
+                $resultRanges[] = new Range($minuend->dateFrom(), $dateTo);
+                if ($range->dateTo() < $minuend->dateTo()) {
+                    $dateFrom = new \DateTime($range->dateTo()->format('Y-m-d H:i:s'));
+                    $dateFrom->add($interval);
+                    $resultRanges[] = new Range($dateFrom, $minuend->dateTo());
+                }
+                continue;
+            }
+
+            if ($range->dateTo() < $minuend->dateTo()) {
+                $dateFrom = new \DateTime($range->dateTo()->format('Y-m-d H:i:s'));
+                $dateFrom->add($interval);
+                $resultRanges[] = new Range($dateFrom, $minuend->dateTo());
+            }
+        }
+        return $resultRanges;
     }
 
     /**

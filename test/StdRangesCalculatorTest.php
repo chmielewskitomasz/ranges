@@ -106,4 +106,135 @@ final class StdRangesCalculatorTest extends TestCase
         $this->assertEquals('2018-01-01 00:00:00', $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
         $this->assertEquals('2018-01-01 00:02:00', $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
     }
+
+    public function test_subNoEffect(): void
+    {
+        $range1 = new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-01-01 00:02:00'));
+        $range2 = new Range(new \DateTime('2018-03-01 00:01:00'), new \DateTime('2018-03-01 00:02:00'));
+
+        $ranges = $this->calculator->sub($range1, $range2);
+        $this->assertCount(1, $ranges);
+        $this->assertEquals($range1->dateFrom()->format('Y-m-d H:i:s'), $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals($range1->dateTo()->format('Y-m-d H:i:s'), $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
+    }
+
+    public function test_subInner(): void
+    {
+        $range1 = new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-02-10 00:01:00'));
+        $range2 = new Range(new \DateTime('2018-01-10 00:01:00'), new \DateTime('2018-02-03 00:02:00'));
+
+        $ranges = $this->calculator->sub($range1, $range2);
+        $this->assertCount(2, $ranges);
+
+        $this->assertEquals('2018-01-01 00:01:00', $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-01-10 00:00:59', $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
+
+        $this->assertEquals('2018-02-03 00:02:01', $ranges[1]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-02-10 00:01:00', $ranges[1]->dateTo()->format('Y-m-d H:i:s'));
+
+
+        $range1 = new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-02-10 00:01:00'));
+        $range2 = new Range(new \DateTime('2018-01-10 00:01:00'), new \DateTime('2018-02-03 00:02:00'));
+        $range3 = new Range(new \DateTime('2018-01-11 00:01:00'), new \DateTime('2018-02-01 00:02:00'));
+
+        $ranges = $this->calculator->sub($range1, $range2, $range3);
+        $this->assertCount(2, $ranges);
+
+        $this->assertEquals('2018-01-01 00:01:00', $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-01-10 00:00:59', $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
+
+        $this->assertEquals('2018-02-03 00:02:01', $ranges[1]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-02-10 00:01:00', $ranges[1]->dateTo()->format('Y-m-d H:i:s'));
+
+
+        $range1 = new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-02-10 00:01:00'));
+        $range2 = new Range(new \DateTime('2018-01-10 00:01:00'), new \DateTime('2018-02-03 00:02:00'));
+        $range3 = new Range(new \DateTime('2018-01-11 00:01:00'), new \DateTime('2018-02-04 00:02:00'));
+
+        $ranges = $this->calculator->sub($range1, $range2, $range3);
+        $this->assertCount(2, $ranges);
+
+        $this->assertEquals('2018-01-01 00:01:00', $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-01-10 00:00:59', $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
+
+        $this->assertEquals('2018-02-04 00:02:01', $ranges[1]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-02-10 00:01:00', $ranges[1]->dateTo()->format('Y-m-d H:i:s'));
+
+
+        $range1 = new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-02-10 00:01:00'));
+        $range2 = new Range(new \DateTime('2018-01-10 00:01:00'), new \DateTime('2018-02-03 00:02:00'));
+        $range3 = new Range(new \DateTime('2018-01-09 00:01:00'), new \DateTime('2018-02-04 00:02:00'));
+
+        $ranges = $this->calculator->sub($range1, $range2, $range3);
+        $this->assertCount(2, $ranges);
+
+        $this->assertEquals('2018-01-01 00:01:00', $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-01-09 00:00:59', $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
+
+        $this->assertEquals('2018-02-04 00:02:01', $ranges[1]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-02-10 00:01:00', $ranges[1]->dateTo()->format('Y-m-d H:i:s'));
+
+
+        $range1 = new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-02-10 00:01:00'));
+        $range2 = new Range(new \DateTime('2018-01-10 00:01:00'), new \DateTime('2018-02-03 00:02:00'));
+        $range3 = new Range(new \DateTime('2018-02-04 00:01:00'), new \DateTime('2018-02-05 00:02:00'));
+
+        $ranges = $this->calculator->sub($range1, $range2, $range3);
+        $this->assertCount(3, $ranges);
+
+        $this->assertEquals('2018-01-01 00:01:00', $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-01-10 00:00:59', $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
+
+        $this->assertEquals('2018-02-03 00:02:01', $ranges[1]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-02-04 00:00:59', $ranges[1]->dateTo()->format('Y-m-d H:i:s'));
+
+        $this->assertEquals('2018-02-05 00:02:01', $ranges[2]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-02-10 00:01:00', $ranges[2]->dateTo()->format('Y-m-d H:i:s'));
+    }
+
+    public function test_subLeftSide(): void
+    {
+        $range1 = new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-01-04 00:02:00'));
+        $range2 = new Range(new \DateTime('2017-12-30 00:00:00'), new \DateTime('2018-01-03 00:02:00'));
+
+        $ranges = $this->calculator->sub($range1, $range2);
+        $this->assertCount(1, $ranges);
+        $this->assertEquals('2018-01-03 00:02:01', $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-01-04 00:02:00', $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
+    }
+
+    public function test_subRightSide(): void
+    {
+        $range1 = new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-01-04 00:02:00'));
+        $range2 = new Range(new \DateTime('2018-01-02 00:00:00'), new \DateTime('2018-03-01 00:02:00'));
+
+        $ranges = $this->calculator->sub($range1, $range2);
+        $this->assertCount(1, $ranges);
+        $this->assertEquals('2018-01-01 00:01:00', $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-01-01 23:59:59', $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
+    }
+
+    public function test_subMix(): void
+    {
+        $range1 = new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-01-04 00:02:00'));
+        $range2 = new Range(new \DateTime('2018-01-02 00:00:01'), new \DateTime('2018-01-02 00:01:00'));
+        $range3 = new Range(new \DateTime('2018-01-03 01:00:00'), new \DateTime('2018-02-01 00:00:00'));
+
+        $ranges = $this->calculator->sub($range1, $range2, $range3);
+        $this->assertCount(2, $ranges);
+        $this->assertEquals('2018-01-01 00:01:00', $ranges[0]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-01-02 00:00:00', $ranges[0]->dateTo()->format('Y-m-d H:i:s'));
+
+        $this->assertEquals('2018-01-02 00:01:01', $ranges[1]->dateFrom()->format('Y-m-d H:i:s'));
+        $this->assertEquals('2018-01-03 00:59:59', $ranges[1]->dateTo()->format('Y-m-d H:i:s'));
+    }
+
+    public function test_subAll(): void
+    {
+        $range1 = new Range(new \DateTime('2018-01-01 00:01:00'), new \DateTime('2018-01-04 00:02:00'));
+        $range2 = new Range(new \DateTime('2017-12-30 00:00:00'), new \DateTime('2018-03-01 00:02:00'));
+
+        $ranges = $this->calculator->sub($range1, $range2);
+        $this->assertCount(0, $ranges);
+    }
 }
